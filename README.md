@@ -7,6 +7,7 @@ Quickly create complex folder structures in your VS Code projects with ease! Thi
 - 📁 Create folder structures from text input
 - 🔀 Support for indented and markdown-style tree formats
 - 📄 Generate empty files within the structure
+- 📄 Generate files with a template within the structure
 - 📊 Create a report of the generated structure
 - 🚀 Works with your current workspace or any selected folder
 
