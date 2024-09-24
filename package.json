@@ -1,9 +1,9 @@
 {
-  "name": "folder-structure-generator",
-  "displayName": "Folder Structure Generator",
+  "name": "folder-structure-generator-with-template",
+  "displayName": "Folder Structure Generator With Template",
   "description": "Quickly create complex folder structures in your VS Code projects with ease! This extension allows you to generate folder and file hierarchies using simple text input, supporting both indented and markdown-style tree formats.",
-  "version": "0.0.1",
-  "publisher": "AhmedRazaQadri",
+  "version": "0.0.2",
+  "publisher": "MetaBuild",
   "license": "MIT",
   "icon": "icon.png",
   "engines": {
@@ -47,6 +47,6 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/ahmedraza11/Folder-Structure-Generator.git"
+    "url": "https://github.com/Metalefs/Folder-Structure-Generator-With-Template.git"
   }
 }

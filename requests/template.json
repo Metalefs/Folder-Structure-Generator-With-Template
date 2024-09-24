@@ -1,0 +1,7 @@
+{
+    "content": "export interface {{fileNamePascalCase}} {\r\n}",
+    "replace": {
+        "text": ".request.ts",
+        "with": "RequestDto"
+    }
+}

@@ -38,9 +38,11 @@ function activate(context) {
 #     components/
 #         ExpenseForm.tsx
 
-# You can use a template for the generated files by creating template.json in ./folder-structure-generator-template
+# You can use a template for the generated files by creating template.json file in selected folder 
 # Params:
 # content: string to interpolate with tokens
+# replace: {text: string to replace from name, with: string to replace matched text with}
+
 # Tokens :
 # {{fileNamePascalCase}}: (interpolation) converted kebab-case filename to PascalCase
 # {{fileNameCamelCase}}: (interpolation) converted kebab-case filename to CamelCase
@@ -110,7 +112,7 @@ function createFolderStructure(rootPath, input) {
   let template = "";
 
   try{    
-    template = require(path.join(rootPath, './folder-structure-generator-template/template.json'));
+    template = require(path.join(rootPath, './template.json'));
   }
   catch(error){
     console.error("Error in createFolderStructure:", error);
@@ -147,10 +149,11 @@ function processTreeStructure(rootPath, lines, template) {
 
       const parentPath = stack[stack.length - 1].path;
       const fullPath = path.join(parentPath, name);
+      const parsedName = name.replace(template.replace.text || '', template.replace.with || '');
       const parsedTemplate = template.content ? 
         template.content
-        .replace('{{fileNamePascalCase}}', toPascalCase(template.fileName || ''))
-        .replace('{{fileNameCamelCase}}', toCamelCase(template.fileName || '')): '';
+        .replace('{{fileNamePascalCase}}', toPascalCase(parsedName || ''))
+        .replace('{{fileNameCamelCase}}', toCamelCase(parsedName || '')): '';
 
       if (name.includes(".")) {
         fs.writeFileSync(fullPath, parsedTemplate);
@@ -186,10 +189,11 @@ function processIndentedStructure(rootPath, lines, template) {
 
       const parentPath = stack[stack.length - 1].path;
       const currentPath = path.join(parentPath, name);
+      const parsedName = name.replace(template.replace.text || '', template.replace.with || '');
       const parsedTemplate = template.content ? 
       template.content
-      .replace('{{fileNamePascalCase}}', toPascalCase(template.fileName || ''))
-      .replace('{{fileNameCamelCase}}', toCamelCase(template.fileName || '')): '';
+      .replace('{{fileNamePascalCase}}', toPascalCase(parsedName || ''))
+      .replace('{{fileNameCamelCase}}', toCamelCase(parsedName || '')): '';
 
       if (name.includes(".")) {
         fs.writeFileSync(currentPath, parsedTemplate);
