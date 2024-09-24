@@ -2,6 +2,18 @@ const vscode = require("vscode");
 const fs = require("fs");
 const path = require("path");
 
+function toCamelCase(text) {
+  return text.replace(/-\w/g, clearAndUpper);
+}
+
+function toPascalCase(text) {
+  return text.replace(/(^\w|-\w)/g, clearAndUpper);
+}
+
+function clearAndUpper(text) {
+  return text.replace(/-/, "").toUpperCase();
+}
+
 function activate(context) {
   console.log("Folder Structure Generator is now active!");
 
@@ -25,6 +37,14 @@ function activate(context) {
 #         page.tsx
 #     components/
 #         ExpenseForm.tsx
+
+# You can use a template for the generated files by creating template.json in ./folder-structure-generator-template
+# Params:
+# content: string to interpolate with tokens
+# Tokens :
+# {{fileNamePascalCase}}: (interpolation) converted kebab-case filename to PascalCase
+# {{fileNameCamelCase}}: (interpolation) converted kebab-case filename to CamelCase
+
 `,
       language: "plaintext",
     });
@@ -87,12 +107,20 @@ function createFolderStructure(rootPath, input) {
 
   let folderCount = 0;
   let fileCount = 0;
+  let template = "";
+
+  try{    
+    template = require(path.join(rootPath, './folder-structure-generator-template/template.json'));
+  }
+  catch(error){
+    console.error("Error in createFolderStructure:", error);
+  }
 
   try {
     if (isTreeFormat) {
-      ({ folderCount, fileCount } = processTreeStructure(rootPath, lines));
+      ({ folderCount, fileCount } = processTreeStructure(rootPath, lines, template));
     } else {
-      ({ folderCount, fileCount } = processIndentedStructure(rootPath, lines));
+      ({ folderCount, fileCount } = processIndentedStructure(rootPath, lines, template));
     }
   } catch (error) {
     console.error("Error in createFolderStructure:", error);
@@ -102,7 +130,7 @@ function createFolderStructure(rootPath, input) {
   return { folderCount, fileCount };
 }
 
-function processTreeStructure(rootPath, lines) {
+function processTreeStructure(rootPath, lines, template) {
   let folderCount = 0;
   let fileCount = 0;
   const stack = [{ path: rootPath, depth: -1 }];
@@ -119,9 +147,13 @@ function processTreeStructure(rootPath, lines) {
 
       const parentPath = stack[stack.length - 1].path;
       const fullPath = path.join(parentPath, name);
+      const parsedTemplate = template.content ? 
+        template.content
+        .replace('{{fileNamePascalCase}}', toPascalCase(template.fileName || ''))
+        .replace('{{fileNameCamelCase}}', toCamelCase(template.fileName || '')): '';
 
       if (name.includes(".")) {
-        fs.writeFileSync(fullPath, "");
+        fs.writeFileSync(fullPath, parsedTemplate);
         fileCount++;
       } else {
         fs.mkdirSync(fullPath, { recursive: true });
@@ -137,7 +169,7 @@ function processTreeStructure(rootPath, lines) {
   return { folderCount, fileCount };
 }
 
-function processIndentedStructure(rootPath, lines) {
+function processIndentedStructure(rootPath, lines, template) {
   const stack = [{ path: rootPath, level: -1 }];
   let folderCount = 0;
   let fileCount = 0;
@@ -154,9 +186,13 @@ function processIndentedStructure(rootPath, lines) {
 
       const parentPath = stack[stack.length - 1].path;
       const currentPath = path.join(parentPath, name);
+      const parsedTemplate = template.content ? 
+      template.content
+      .replace('{{fileNamePascalCase}}', toPascalCase(template.fileName || ''))
+      .replace('{{fileNameCamelCase}}', toCamelCase(template.fileName || '')): '';
 
       if (name.includes(".")) {
-        fs.writeFileSync(currentPath, "");
+        fs.writeFileSync(currentPath, parsedTemplate);
         fileCount++;
       } else {
         fs.mkdirSync(currentPath, { recursive: true });

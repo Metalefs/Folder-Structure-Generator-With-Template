@@ -1,0 +1,3 @@
+{
+    "content": "export interface {{fileNamePascalCase}} {}"
+}
