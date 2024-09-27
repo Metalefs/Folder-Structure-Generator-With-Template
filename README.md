@@ -8,6 +8,7 @@ Quickly create complex folder structures in your VS Code projects with ease! Thi
 - 🔀 Support for indented and markdown-style tree formats
 - 📄 Generate empty files within the structure
 - 📄 Generate files with a template within the structure
+- 📁 Accepts custom configuration files per directory
 - 📊 Create a report of the generated structure
 - 🚀 Works with your current workspace or any selected folder
 
@@ -15,7 +16,7 @@ Quickly create complex folder structures in your VS Code projects with ease! Thi
 
 1. Open VS Code
 2. Go to the Extensions view (Ctrl+Shift+X or Cmd+Shift+X)
-3. Search for "Folder Structure Generator"
+3. Search for "Folder Structure Generator With Template"
 4. Click Install
 
 ## 🚀 Usage
@@ -49,6 +50,74 @@ Quickly create complex folder structures in your VS Code projects with ease! Thi
 4. Run the "Process Folder Structure" command from the Command Palette
 5. Select the folder where you want to create the structure
 6. 🎉 The extension will create the folder structure and show a summary
+
+Here’s the documentation in Markdown format:
+
+---
+
+## Custom Template for File Generation
+
+You can customize the template for each generated file by creating a `template.json` file inside the directory where you are generating the structure.
+
+### Template Format:
+
+#### `content`: (string)
+- **Description**: Defines the base content for **all files**.
+- **Example**: `"export interface {{fileNamePascalCase}} {{body}}"`
+  
+  In this case, the filename (converted to PascalCase) and body content will be interpolated into the template.
+
+#### `useFileName`: (object)
+- **Description**: Replaces specific text within filenames based on the defined rules.
+  - `findText`: (string) – The text in the filename that you want to replace.
+    - **Example**: For the file `some-api-route.request.ts`, set `findText` to `.request.ts`.
+  - `replaceWith`: (string) – The replacement for `findText`.
+    - **Example**: Set `{"replaceWith": "RequestDto"}`. If `findText` is `.request.ts`, the token `{{fileNamePascalCase}}` becomes `SomeApiRouteRequestDto`.
+
+#### `customTemplates`: (object)
+- **Description**: Customizes the body content based on specific file name patterns.
+  - `fileName`: (string) – Matches a filename [without extension] to apply the template.
+  - `body`: (string) – Content to replace the `{{body}}` token in the template.
+  - `requestBody`: (string) – Content for the `{{body}}` token **when the filename contains the word "request"**.
+  - `responseBody`: (string) – Content for the `{{body}}` token **when the filename contains the word "response"**.
+  - `match`: (string) – Used to match a filename when the filename repeats across directories. For example, `"match": "/api/v1/azure"` ensures that the template is applied if the file name ends with '`\\/api/v1/azure`'. This is useful for generating API models based on routes.
+
+---
+
+### Available Tokens (Interpolated into `content`):
+- `{{fileName}}`: The raw filename [with extension].
+- `{{fileNamePascalCase}}`: The filename converted from kebab-case to PascalCase.
+- `{{fileNameCamelCase}}`: The filename converted from kebab-case to camelCase.
+- `{{body}}`: The body content, which will be replaced with `body`, `requestBody`, or `responseBody`, depending on the filename.
+
+> **Note**: The tokens will not affect the actual content of the `body` string.
+
+---
+
+### Example Usage:
+
+```json
+{
+  "content": "export interface {{fileNamePascalCase}} {{body}}",
+  "useFileName": {
+    "findText": ".request.ts",
+    "replaceWith": "RequestDto"
+  },
+  "customTemplates": {
+    "fileName": "some-file.ts",
+    "body": "Default body content",
+    "requestBody": "Request-specific body content",
+    "responseBody": "Response-specific body content",
+    "match": "/api/v1/azure"
+  }
+}
+```
+
+In this example:
+- If a file is named `some-api-route.request.ts`, the `{{fileNamePascalCase}}` token in the content will be replaced with `SomeApiRouteRequestDto`.
+- The `{{body}}` token will be replaced with the appropriate content depending on the file name or match.
+
+---
 
 ## 👥 Contributing
 
