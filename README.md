@@ -1,13 +1,15 @@
-# 🌳 Folder Structure Generator
+# 🌳 Scaffold Directories with Template files
 
-Quickly create complex folder structures in your VS Code projects with ease! This extension allows you to generate folder and file hierarchies using simple text input, supporting both indented and markdown-style tree formats.
+Scaffold complex files in your VS Code projects with ease! This extension allows you to generate folder hierarchies with customized template files using simple text input, supporting both indented and markdown-style tree formats.
+
+![gif-scaffold](https://github.com/user-attachments/assets/7a4bb527-319e-48f8-b6c5-141131a46ff9)
 
 ## ✨ Features
 
 - 📁 Create folder structures from text input
 - 🔀 Support for indented and markdown-style tree formats
 - 📄 Generate empty files within the structure
-- 📄 Generate files with a template within the structure
+- 📁 Generate files with a template within the structure
 - 📁 Accepts custom configuration files per directory
 - 📊 Create a report of the generated structure
 - 🚀 Works with your current workspace or any selected folder
@@ -16,7 +18,7 @@ Quickly create complex folder structures in your VS Code projects with ease! Thi
 
 1. Open VS Code
 2. Go to the Extensions view (Ctrl+Shift+X or Cmd+Shift+X)
-3. Search for "Folder Structure Generator With Template"
+3. Search for "Scaffold Folder Structure With Custom File Templates"
 4. Click Install
 
 ## 🚀 Usage
@@ -51,13 +53,10 @@ Quickly create complex folder structures in your VS Code projects with ease! Thi
 5. Select the folder where you want to create the structure
 6. 🎉 The extension will create the folder structure and show a summary
 
-Here’s the documentation in Markdown format:
-
----
-
 ## Custom Template for File Generation
 
 You can customize the template for each generated file by creating a `template.json` file inside the directory where you are generating the structure.
+**new changes to template.json require reopening vs code to take effect**
 
 ### Template Format:
 
