@@ -176,8 +176,8 @@ const processStructure = (rootPath, lines, template, getDepthAndName) => {
 
       const parentPath = stack[stack.length - 1].path;
       const fullPath = path.join(parentPath, safeName).trim();
-
-      const replacedName = safeName.replace(template.usefileName.findText || '', template.usefileName.replaceWith || '');
+      
+      const replacedName = safeName.replace(template.useFileName.findText || '', template.useFileName.replaceWith || '');
       const replacedContent = template.content 
         ? template.content
           .replace('{{fileName}}', replacedName || '')

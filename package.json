@@ -2,7 +2,7 @@
   "name": "folder-structure-scaffold-with-file-templates",
   "displayName": "Scaffold Folder Structure With Custom File Templates",
   "description": "Scaffold complex files in your VS Code projects with ease! This extension allows you to generate folder and file hierarchies using simple text input, supporting both indented and markdown-style tree formats.",
-  "version": "0.0.3",
+  "version": "0.0.1",
   "publisher": "MetaBuild",
   "license": "MIT",
   "icon": "icon.png",
